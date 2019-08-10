@@ -1,0 +1,134 @@
+Entradas validas con salidas esperadas:
+
+./main.exe -l archivo.csv  
+./main.exe --leer archivo.csv  
+
+./main.exe -m -s -l archivo.csv  
+./main.exe -l archivo.csv -m -s
+./main.exe --municipio -s -l archivo.csv  
+./main.exe -l archivo.csv --municipio -s 
+
+./main.exe -s --municipio --leer archivo.csv  
+./main.exe --municipio -s -l archivo.csv  
+./main.exe --municipio -l archivo.csv -s 
+
+./main.exe --salida --municipio --leer archivo.csv  
+./main.exe --municipio --salida -l archivo.csv  
+./main.exe --municipio -l archivo.csv --salida 
+
+./main.exe -s out --municipio --leer archivo.csv  
+./main.exe --municipio -s out -l archivo.csv  
+./main.exe --municipio -l archivo.csv -s out 
+
+./main.exe -s --municipio -l archivo.csv -M 2
+./main.exe -s --municipio -M 2 -l archivo.csv  
+./main.exe -s -M 2 --municipio -l archivo.csv 
+
+./main.exe --municipio -l archivo.csv --mayores 2 -s
+./main.exe --municipio --mayores 2 -l archivo.csv -s 
+./main.exe --mayores 2 --municipio -l archivo.csv -s
+
+./main.exe --municipio -l archivo.csv --mayores 2 -s out
+./main.exe --municipio --mayores 2 -s out -l archivo.csv
+./main.exe --mayores 2 -s out --municipio -l archivo.csv
+./main.exe -s out --mayores 2 --municipio -l archivo.csv
+
+./main.exe -s out --mayores 2 --municipio -s -l archivo.csv -a
+./main.exe -s out --mayores 2 --municipio -s -l archivo.csv -s
+./main.exe -s out --mayores 2 --municipio -s -l archivo.csv --ayuda
+./main.exe -s out --mayores 2 --municipio -s -l archivo.csv --help
+
+./main.exe --ayuda -s out --mayores 2 --municipio -s -l archivo.csv
+./main.exe -s out --help --mayores 2 --municipio -s -l archivo.csv
+./main.exe -s out --mayores 2 -h --municipio -s -l archivo.csv
+./main.exe -s out --mayores 2 --municipio -s -a -l archivo.csv
+
+
+Entradas invalidas y errores obtenidos
+
+./main.exe -m   ->ERROR 65: Falta argumento requerido
+./main.exe   ->ERROR 65: Falta argumento requerido
+
+./main.exe -l -> ERROR 66: No se ingreso un parametro para -l.
+
+./main.exe -l archivo.csv -m -m   ->ERROR 67: Se ingresaron argumentos extra
+./main.exe -s -s -l archivo.csv   ->ERROR 67: Se ingresaron argumentos extra
+
+./main.exe -l arc  ->ERROR 68: No se pudo abrir/crear el archivo de lectura arc.
+
+./main.exe -l archivo.csv -m -M 2  -> ERROR 70: -m|--municipio requiere de -s|--salida
+./main.exe -l archivo -m           -> ERROR 70: -m|--municipio requiere de -s|--salida
+
+
+./main.exe -l archivo.csv -M 2  ->ERROR 99: El argumento -M|--mayores solo puede ser ingresado junto con -m|--municipio
+
+./main.exe -l archivo.csv  -m -s -M            ->ERROR 100: Valor incorrecto o faltante para argumento --mayores
+./main.exe -l archivo.csv --mayores -5 -m -s   ->ERROR 100: Valor incorrecto o faltante para argumento --mayores
+./main.exe -l archivo.csv --mayores 0 -m -s    ->ERROR 100: Valor incorrecto o faltante para argumento --mayores
+
+
+./main.exe -M 12 -l archivo.csv  -m -s ->ERROR 101: No hay suficientes elementos para generar la salida.
+
+
+Con valgrind
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv -m
+
+	 HEAP SUMMARY:
+	==31983==     in use at exit: 0 bytes in 0 blocks
+	==31983==   total heap usage: 329 allocs, 329 frees, 141,162 bytes allocated
+	==31983== 
+	==31983== All heap blocks were freed -- no leaks are possible
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv -m
+
+	 HEAP SUMMARY:
+	==32052==     in use at exit: 0 bytes in 0 blocks
+	==32052==   total heap usage: 14 allocs, 14 frees, 6,242 bytes allocated
+	==32052== 
+	==32052== All heap blocks were freed -- no leaks are possible
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv -m --mayores 2
+
+	 HEAP SUMMARY:
+	==32114==     in use at exit: 0 bytes in 0 blocks
+	==32114==   total heap usage: 323 allocs, 323 frees, 142,734 bytes allocated
+	==32114== 
+	==32114== All heap blocks were freed -- no leaks are possible
+	==32114== 
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv -m --mayores 7
+
+	ERROR 101: No hay suficientes elementos para generar la salida.
+	==32166== 
+	==32166== HEAP SUMMARY:
+	==32166==     in use at exit: 0 bytes in 0 blocks
+	==32166==   total heap usage: 320 allocs, 320 frees, 145,950 bytes allocated
+	==32166== 
+	==32166== All heap blocks were freed -- no leaks are possible
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv -m  -s -M -5
+
+	HEAP SUMMARY:
+	==19300==     in use at exit: 0 bytes in 0 blocks
+	==19300==   total heap usage: 1 allocs, 1 frees, 552 bytes allocated
+	==19300== 
+	==19300== All heap blocks were freed -- no leaks are possible
+
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv  -s -M 2
+
+	HEAP SUMMARY:
+	==19300==     in use at exit: 0 bytes in 0 blocks
+	==19300==   total heap usage: 1 allocs, 1 frees, 552 bytes allocated
+	==19300==
+	==19300== All heap blocks were freed -- no leaks are possible
+
+valgrind --leak-check=yes ./main.exe -l archivo.csv -m -s -M 20
+
+	HEAP SUMMARY:
+	==19300==     in use at exit: 0 bytes in 0 blocks
+	==19300==   total heap usage: 1 allocs, 1 frees, 552 bytes allocated
+	==19300==
+	==19300== All heap blocks were freed -- no leaks are possible
+

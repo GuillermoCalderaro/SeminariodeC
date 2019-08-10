@@ -1,0 +1,19 @@
+
+El programa acepta los siguientes argumentos:
+
+-h|-a|--help|--ayuda:
+    Muestra que argumentos admite el programa con una ayuda breve para cada uno.
+
+-l|--leer archivo:
+    Carga el archivo CSV de nombre “archivo”.
+
+-s|--salida archivo:
+    Indica el nombre del archivo donde se generara la secuencia de puntos. Si se indica
+  como archivo “-” o se omite este argumento, la salida se envıa a la salida estandar.
+
+-m|--municipio:
+    Indica que se generara un unico punto por cada municipio.
+
+-M|--mayores cantidad:
+    Indica que se generara un archivo con los primeros cantidad de municipios cuya
+suma de basurales sea mayor a cantidad.
